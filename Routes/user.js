@@ -10,7 +10,6 @@ router.post("/user", (req, res) => {
 
   User.create(user)
     .then(() => {
-      console.log("Done");
       res.status(200).send(user);
     })
     .catch((err) => {

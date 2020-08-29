@@ -4,6 +4,8 @@ const app = express();
 const port = 3000;
 const User = require("./models/user.js");
 const userroute = require("./Routes/user.js");
+const Ticket = require("./models/ticket.js");
+const ticketroute = require("./Routes/ticket.js");
 require("dotenv").config();
 
 app.use(express.json());
@@ -17,6 +19,7 @@ mongoose
   .catch((error) => console.log(error.message));
 
 app.use(userroute);
+app.use(ticketroute);
 
 app.get("/", (req, res) => {
   res.send("welcome to the page");
