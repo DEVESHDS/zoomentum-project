@@ -3,25 +3,61 @@ const router = express.Router();
 const Ticket = require("../models/ticket.js");
 const mongoose = require("mongoose");
 
+// router.post("/ticket/new", (req, res) => {
+//   let id = req.body.userid;
+//   let phonenum = req.body.phone;
+//   let date1 = req.body.timing;
+//   let newticket = new Ticket({
+//     userid: id,
+//     phone: phonenum,
+//     timing: date1,
+//   });
+//   Ticket.create(newticket)
+//     .then(() => {
+//       console.log("successfuly created a new ticket");
+//       console.log(newticket);
+//       res.status(200).send(newticket);
+//     })
+//     .catch((err) => {
+//       res.status(500).send(err);
+//     });
+// });
+
+//==========================new ticket router
+
 router.post("/ticket/new", (req, res) => {
   let id = req.body.userid;
   let phonenum = req.body.phone;
   let date1 = req.body.timing;
-  let newticket = new Ticket({
-    userid: id,
-    phone: phonenum,
-    timing: date1,
+  Ticket.find({ timing: date1 }, (err, obj) => {
+    if (!err && obj.length <= 20) {
+      console.log("inside if condition");
+      console.log(obj.length);
+      let newticket = new Ticket({
+        userid: id,
+        phone: phonenum,
+        timing: date1,
+      });
+      Ticket.create(newticket)
+        .then(() => {
+          console.log("successfuly created a new ticket");
+          console.log(newticket);
+          res.status(200).send(newticket);
+        })
+        .catch((err) => {
+          res.status(500).send(err);
+        });
+    } else {
+      res
+        .status(500)
+        .send(
+          "Tickets for this timing are not available...please try some other timing"
+        );
+    }
   });
-  Ticket.create(newticket)
-    .then(() => {
-      console.log("successfuly created a new ticket");
-      console.log(newticket);
-      res.status(200).send(newticket);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
 });
+
+//===========================
 
 //update ticket router
 
