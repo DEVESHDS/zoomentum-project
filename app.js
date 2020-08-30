@@ -15,11 +15,14 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Connected to DB!"))
+  .then(() => {
+    console.log("Connected to DB!");
+    require("./scheduler/agenda.js");
+  })
   .catch((error) => console.log(error.message));
 
 app.use(userroute);
-app.use(ticketroute);
+app.use("/ticket", ticketroute);
 
 app.get("/", (req, res) => {
   res.send("welcome to the page");

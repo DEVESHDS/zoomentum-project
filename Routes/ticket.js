@@ -3,29 +3,9 @@ const router = express.Router();
 const Ticket = require("../models/ticket.js");
 const mongoose = require("mongoose");
 
-// router.post("/ticket/new", (req, res) => {
-//   let id = req.body.userid;
-//   let phonenum = req.body.phone;
-//   let date1 = req.body.timing;
-//   let newticket = new Ticket({
-//     userid: id,
-//     phone: phonenum,
-//     timing: date1,
-//   });
-//   Ticket.create(newticket)
-//     .then(() => {
-//       console.log("successfuly created a new ticket");
-//       console.log(newticket);
-//       res.status(200).send(newticket);
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err);
-//     });
-// });
-
 //==========================new ticket router
 
-router.post("/ticket/new", (req, res) => {
+router.post("/new", (req, res) => {
   let id = req.body.userid;
   let phonenum = req.body.phone;
   let date1 = req.body.timing;
@@ -63,7 +43,11 @@ router.post("/ticket/new", (req, res) => {
 
 router.put("/update/:id", (req, res) => {
   //   console.log(req.params);
-  Ticket.findByIdAndUpdate(req.params.id, { $set: { timing: req.body.date } })
+  Ticket.findByIdAndUpdate(
+    req.params.id,
+    { $set: { timing: req.body.timing } },
+    { new: true }
+  )
     .then((updatedticket) => {
       console.log("successfully update");
       res.status(200).send(updatedticket);
@@ -79,7 +63,7 @@ router.delete("/delete/:id", (req, res) => {
   Ticket.findByIdAndDelete(req.params.id)
     .then(() => {
       console.log("successfully deleted");
-      res.status(200).send();
+      res.status(200).send("Ticket successfully deleted");
     })
     .catch((err) => {
       res.status(500).send(err);
@@ -99,11 +83,11 @@ router.get("/view", (req, res) => {
     });
 });
 
-//get  user from itcket id
+//get  user from ticket id
 
-router.get("/user/:id", (req, res) => {
+router.get("/user/:tid", (req, res) => {
   try {
-    Ticket.findById(req.params.id)
+    Ticket.findById(req.params.tid)
       .populate("userid")
       .exec(function (err, ticket) {
         try {
