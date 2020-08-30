@@ -27,6 +27,6 @@ app.use("/ticket", ticketroute);
 app.get("/", (req, res) => {
   res.send("welcome to the page");
 });
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`app listening at http://localhost:${port}`);
 });
